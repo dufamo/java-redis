@@ -35,7 +35,8 @@ src/
 │   │   ├── persistence/   # 持久化
 │   │   ├── protocol/       # RESP协议
 │   │   ├── replication/   # 主从复制
-│   │   └── sentinel/      # 哨兵
+│   │   ├── sentinel/      # 哨兵
+│   │   └── RedisServer.java  # 服务器启动类
 │   └── resources/         # 资源文件
 └── test/                  # 单元测试
 ```
@@ -61,6 +62,7 @@ src/
 - **ClusterManager**：集群管理
 
 ### 4. 网络与协议
+- **RedisServer**：服务器启动类，主入口
 - **NettyServer**：基于Netty的NIO服务器
 - **RedisClientHandler**：客户端连接处理
 - **RESPParser**：RESP协议解析
@@ -77,6 +79,21 @@ src/
 mvn clean package
 ```
 
+### 启动服务器
+```bash
+# 使用默认配置启动（端口6379，16个数据库）
+java -cp target/java-redis-1.0.0.jar com.learn.redis.RedisServer
+
+# 自定义端口
+java -cp target/java-redis-1.0.0.jar com.learn.redis.RedisServer --port 6380
+
+# 启用AOF持久化
+java -cp target/java-redis-1.0.0.jar com.learn.redis.RedisServer --aof-enabled true
+
+# 配置从节点
+java -cp target/java-redis-1.0.0.jar com.learn.redis.RedisServer --replicaof 127.0.0.1:6379
+```
+
 ### 运行示例
 ```bash
 java -cp target/java-redis-1.0.0.jar com.learn.redis.example.RedisExample
@@ -86,6 +103,9 @@ java -cp target/java-redis-1.0.0.jar com.learn.redis.example.RedisExample
 ```bash
 mvn test
 ```
+
+### 停止服务器
+使用 `Ctrl+C` 优雅关闭服务器
 
 ## 学习指南
 
